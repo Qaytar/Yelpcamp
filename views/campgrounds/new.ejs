@@ -1,0 +1,42 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">New Campground</h1>
+    <div class="col-6 offset-3">
+        <form method="POST" action="/campgrounds" novalidate class="validated-form" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="title">Title</label>
+                <input class="form-control" type="text" name="campground[title]" id="title" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="location">Location</label>
+                <input class="form-control" type="text" name="campground[location]" id="location" required>
+            </div>
+            <div class="mb-3">
+                <label for="price">Campground Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="price">$</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="0.00" aria-label="price" aria-describedby="price" name="campground[price]" required>
+                </div>
+            </div>
+            <input type="file" name="image" id="image" multiple>
+            <!-- <div class="form-group mb-3">
+                <label for="image">URL Image</label>
+                <input class="form-control" type="text" name="campground[image]" id="image" required>
+            </div> -->
+            <div class="form-group mb-3">
+                <label for="description">Description</label>
+                <textarea class="form-control" type="text" name="campground[description]" id="description" cols="30" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-secondary">Add Campground</button>
+            </div>
+            
+        </form>
+        <footer>
+            <a href="/campgrounds">Back to all Camps</a>
+        </footer>   
+    </div>
+</div>
