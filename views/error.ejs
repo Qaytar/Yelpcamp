@@ -5,7 +5,9 @@
             <h4 class="alert-heading">Error <%= err.statusCode %></h4>
             <p>The error message we got is: "<%= err.message %>"</p>           
             <hr>
+            <% if (process.env.NODE_ENV !== 'production') { %>
             <p><%= err.stack %></p>
+            <% } %>
         </div>
     </div>
 </div>

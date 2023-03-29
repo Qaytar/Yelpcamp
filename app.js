@@ -19,6 +19,11 @@ const passport = require('passport');
 const LocalPassport = require('passport-local');
 const User = require('./models/user');
 
+const mongoSanitize = require('express-mongo-sanitize');
+
+const helmet = require('helmet');
+
+
 //Connects to mongoDb
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
@@ -42,13 +47,22 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 //enabling the public directory
 app.use(express.static(path.join(__dirname, 'public')))
+//express-mongo-sanitize: prevents queries to have prohibited carachters to prevent injection
+app.use(mongoSanitize());
+
+
 //express-session config
 const sessionConfig = {
+    //changing the default name as a security measure
+    name: 'sesh',
     secret: 'secret123456',
     resave: false,
     saveUninitialized: true,
     cookie: {
+        //this line prevents attacks to access the session cookie via scripts, as these can only be accessed via HTTP only
         httpOnly: true,
+        //uncomment follwong line when in production, so that session only works in HTTPS
+        //secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -56,6 +70,9 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 //calling flash
 app.use(flash());
+
+//initialize helmet security package
+app.use(helmet({ contentSecurityPolicy: false }));
 
 //initialize passport tool for auth
 app.use(passport.initialize());
